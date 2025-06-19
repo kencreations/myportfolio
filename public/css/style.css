@@ -46,6 +46,85 @@ h1, h2, h3, .font-bold {
   z-index: 0;
   pointer-events: none; /* allows clicks through it */
 }
+.vertical-timeline-element-title,
+.vertical-timeline-element-subtitle,
+.vertical-timeline-element-date {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.vertical-timeline-element-title{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.5em;
+    margin: 0;
+}
+.vertical-timeline-element-date{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: .9em;
+    margin: 0;
+    color: #d1d5db;
+}
+.vertical-timeline-element-subtitle{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
+    margin: 0;
+}
+.vertical-timeline-element-content{
+    font-family: 'Poppins', sans-serif;
+    background: #023e73;
+    color: white;
+    animation: cd-bounce 1s;
+    border-radius: .25em;
+    box-shadow: 0 3px 0 #ddd;
+    position: relative;
+    border-radius: .25em;
+    padding: 1em;
+    -webkit-box-shadow: 0 3px 0 #ddd;
+
+}
+.vertical-timeline-element-content {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.vertical-timeline-element-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: cd-bounce 1s ease;
+}
+
+
+.vertical-timeline-element-content ul {
+    margin-top: 10px;
+}
+@media only screen and (min-width: 1170px) {
+    .vertical-timeline--two-columns .vertical-timeline-element-content {
+        margin-left: 0;
+        padding: 1.5em;
+        width: 44%;
+    }
+}
+@keyframes cd-bounce {
+ 0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
+}
+60% {
+    opacity: 1;
+    -webkit-transform: translateX(20px);
+    transform: translateX(20px);
+}
+100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+}
 .see-projects {
   display: flex;
   flex-direction: column;
