@@ -126,6 +126,12 @@ I work closely with clients — especially students — to create efficient, sca
 
 
             </section>
+            <section id="tech-cubes" class="text-center mt-5">
+  <p class="hammer">Technologies I Use</p>
+  <div id="tech-stack-cubes" style="display: flex; flex-wrap: wrap; gap: .5 rem;"></div>
+
+</section>
+
             <script>
   document.addEventListener("DOMContentLoaded", () => {
     const elements = document.querySelectorAll('.vertical-timeline-element-content');
@@ -200,6 +206,95 @@ I work closely with clients — especially students — to create efficient, sca
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
     <script src="/js/navbar.js"></script>
+    <!-- Use older version of Three.js and OrbitControls -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.141.0/examples/js/controls/OrbitControls.min.js"></script>
+
+
+    <script>
+  const logos = [
+    "/images/logos/html.png",
+    "/images/logos/css.png",
+    "/images/logos/nodejs.png",
+    "/images/logos/php.png",
+    "/images/logos/node.png",
+    "/images/logos/react.png",
+    // Add more logos as needed
+  ];
+
+  const container = document.getElementById("tech-stack-cubes");
+
+  logos.forEach((logo) => {
+    // Create and append canvas
+    const canvas = document.createElement("canvas");
+    canvas.width = 150;
+    canvas.height = 150;
+    canvas.style.borderRadius = "10px";
+    container.appendChild(canvas);
+
+    // Three.js setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      canvas.width / canvas.height,
+      0.1,
+      1000
+    );
+    camera.position.z = 6;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setSize(canvas.width, canvas.height);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableDamping = true;
+
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+
+    const directionalLights = new THREE.DirectionalLight(0xffffff, 0.9);
+    directionalLights.position.set(-5, -5, -5);
+    directionalLights.castShadow = true;
+    scene.add(directionalLights);
+
+    // Load texture and create cube
+    const loader = new THREE.TextureLoader();
+    loader.load(logo, (texture) => {
+        
+      const material = new THREE.MeshPhongMaterial({ map: texture, color: "#fff8eb", roughness: 0.5, metalness: 0.1, shininess:150, clearcoat: 0.5, clearcoatRoughness: 0.1 });
+      material.side = THREE.DoubleSide; // Ensure the texture is visible from both sides
+      const cube = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 3, 3), // 📦 bigger cube
+        Array(6).fill(material)
+      );
+      scene.add(cube);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    });
+  });
+</script>
+
+
+
+
+
+
     
 
     <script>
