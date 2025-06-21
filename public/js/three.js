@@ -1,68 +1,63 @@
-const container = document.getElementById("tech-stack-cubes");
+const logos = [
+    '/images/logos/html.png',
+    '/images/logos/css.png',
+    '/images/logos/sass.png',
+    '/images/logos/bootstrap.png',
+    '/images/logos/tailwind.png',
+    '/images/logos/javascript.png',
+    '/images/logos/typescript.png',
+    '/images/logos/nodejs.png',
+    '/images/logos/mongodb.png',
+    '/images/logos/python.png',
+    '/images/logos/django.png',
+    '/images/logos/flask.png',
+    '/images/logos/figma.png',
+    '/images/logos/threejs.svg',
+    // Add more logos as needed
+];
 
-const pl = [
-    "/images/logos/html.png", 
-    "/images/logos/css.png",
-    "/images/logos/sass.png",
-    "/images/logos/bootstrap.png",
-    "/images/logos/tailwind.png",
-    "/images/logos/javascript.png",
-    "/images/logos/typescript.png",
-    "/images/logos/nodejs.png",
-    "/images/logos/express.png",
-    "/images/logos/mongodb.png",
-    "/images/logos/python.png",
-    "/images/logos/django.png",
-    "/images/logos/flask.png",
-    "/images/logos/git.png",
-    "/images/logos/github.png",
-    "/images/logos/azure.png",
-    "/images/logos/figma.png",
-    "/images/logos/threejs.png",
-    "/images/logos/react.png",
-    "/images/logos/redux.png",
-    "/images/logos/vue.png",
-    "/images/logos/angular.png"
+const container = document.getElementById('tech-stack-cubes');
 
-
-]
-
-pl.forEach((item) => {
-    console.log(item.name, item.path);
-    const canvas = document.createElement("canvas");
+logos.forEach((logo) => {
+    // Create and append canvas
+    const canvas = document.createElement('canvas');
     canvas.width = 150;
     canvas.height = 150;
-    canvas.style.borderRadius = "10px";
-    canvas.className = name.toLowerCase().replace(/\s+/g, '-');
-    canvas.id = item.toLowerCase().replace(/\s+/g, '-');
-
+    canvas.style.borderRadius = '10px';
     container.appendChild(canvas);
 
-    // Create a 3D scene using Three.js
+    // Three.js setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
-
+    const camera = new THREE.PerspectiveCamera(
+        75,
+        canvas.width / canvas.height,
+        0.1,
+        1000
+    );
     camera.position.z = 6;
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+    });
     renderer.setSize(canvas.width, canvas.height);
 
-    const control = new THREE.OrbitControls(camera, canvas);
-    control.enableZoom = false;
-    control.enablePan = false;
-    control.enableRotate = true;
-    control.enableDamping = true;
-    control.dampingFactor = 0.25;
-    control.autoRotate = true;
-    control.autoRotateSpeed = 2.0;
-    control.update();
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 4;
+    controls.update();
 
-    // Add a light source
-    const light = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light);
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(1, 1, 1).normalize();
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
 
     const directionalLights = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -70,46 +65,52 @@ pl.forEach((item) => {
     directionalLights.castShadow = true;
     scene.add(directionalLights);
 
-    // Load the texture
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(item, (texture) => {
-        // Create a cube with the loaded texture
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({ color: "#023e73", shininess: 50 })
-        const cube = new THREE.Mesh(geometry, material);
-        
-        // Set the position of the cube
-        item.position.x = Math.random() * 2 - 1; // Random x position
-        item.position.z = Math.random() * 2 - 1; // Random z position
+    // Load texture and create cube
+    const loader = new THREE.TextureLoader();
+    loader.load(logo, (texture) => {
+        const cube = new THREE.Mesh(
+            new THREE.BoxGeometry(3, 3, 3),
+            new THREE.MeshPhongMaterial({ color: '#023e73', shininess: 50 })
+        );
 
-
-        cube.position.set(item.position.x, item.position.z);
-        
-        // Add the cube to the scene
         scene.add(cube);
 
-
-        // Create a decal on the cube
-
-        const decalMaterial = new THREE.MeshStandardMaterial({
+        const decalMaterial = new THREE.MeshPhongMaterial({
             map: texture,
             transparent: true,
             depthTest: true,
             depthWrite: false,
             polygonOffset: true,
-            polygonOffsetFactor: -5,
+            polygonOffsetFactor: -4,
         });
 
-        const decalSize = new THREE.Vector3(2.4, 2.4, 2.4); // Size of the decal
-
+        const decalSize = new THREE.Vector3(2.4, 2.4, 2.4);
 
         const decalConfigs = [
-            { pos: new THREE.Vector3(0, 0, 1.51), rot: new THREE.Euler(0, 0, 0) },                     // front
-            { pos: new THREE.Vector3(0, 0, -1.51), rot: new THREE.Euler(0, Math.PI, 0) },              // back
-            { pos: new THREE.Vector3(1.51, 0, 0), rot: new THREE.Euler(0, Math.PI / 2, 0) },           // right
-            { pos: new THREE.Vector3(-1.51, 0, 0), rot: new THREE.Euler(0, -Math.PI / 2, 0) },         // left
-            { pos: new THREE.Vector3(0, 1.51, 0), rot: new THREE.Euler(-Math.PI / 2, 0, 0) },          // top
-            { pos: new THREE.Vector3(0, -1.51, 0), rot: new THREE.Euler(Math.PI / 2, 0, 0) },          // bottom
+            {
+                pos: new THREE.Vector3(0, 0, 1.51),
+                rot: new THREE.Euler(0, 0, 0),
+            }, // front
+            {
+                pos: new THREE.Vector3(0, 0, -1.51),
+                rot: new THREE.Euler(0, Math.PI, 0),
+            }, // back
+            {
+                pos: new THREE.Vector3(1.51, 0, 0),
+                rot: new THREE.Euler(0, Math.PI / 2, 0),
+            }, // right
+            {
+                pos: new THREE.Vector3(-1.51, 0, 0),
+                rot: new THREE.Euler(0, -Math.PI / 2, 0),
+            }, // left
+            {
+                pos: new THREE.Vector3(0, 1.51, 0),
+                rot: new THREE.Euler(-Math.PI / 2, 0, 0),
+            }, // top
+            {
+                pos: new THREE.Vector3(0, -1.51, 0),
+                rot: new THREE.Euler(Math.PI / 2, 0, 0),
+            }, // bottom
         ];
 
         decalConfigs.forEach(({ pos, rot }) => {
@@ -117,19 +118,16 @@ pl.forEach((item) => {
                 new THREE.DecalGeometry(cube, pos, rot, decalSize),
                 decalMaterial
             );
-    
-            scene.add(decal);
-         });
-         
-        // Set camera position
-        camera.position.z = 3;
 
-        // Render the scene
+            scene.add(decal);
+        });
+
         function animate() {
             requestAnimationFrame(animate);
-            control.update();
+            controls.update();
             renderer.render(scene, camera);
         }
+
         animate();
     });
 });
