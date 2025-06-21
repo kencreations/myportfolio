@@ -213,16 +213,20 @@ I work closely with clients — especially students — to create efficient, sca
 <script src="https://cdn.jsdelivr.net/npm/three@0.141.0/examples/js/loaders/TextureLoader.js"></script>
     <script>
   const logos = [
-    "/images/logos/html.png",
+    "/images/logos/html.png", 
     "/images/logos/css.png",
-    "/images/logos/javascript.png",
-    "/images/logos/nodejs.png",
-    "/images/logos/php.png",
-    "/images/logos/python.png",
-    "/images/logos/figma.png",
-    "/images/logos/git.png",
+    "/images/logos/sass.png",
+    "/images/logos/bootstrap.png",
     "/images/logos/tailwind.png",
+    "/images/logos/javascript.png",
+    "/images/logos/typescript.png",
+    "/images/logos/nodejs.png",
     "/images/logos/mongodb.png",
+    "/images/logos/python.png",
+    "/images/logos/django.png",
+    "/images/logos/flask.png",
+    "/images/logos/figma.png",
+    "/images/logos/threejs.svg",
     // Add more logos as needed
   ];
 
@@ -257,6 +261,10 @@ I work closely with clients — especially students — to create efficient, sca
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 4;
+    controls.update();
 
     // Add lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
