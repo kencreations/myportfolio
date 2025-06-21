@@ -209,16 +209,19 @@ I work closely with clients — especially students — to create efficient, sca
     <!-- Use older version of Three.js and OrbitControls -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.141.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.141.0/examples/js/controls/OrbitControls.min.js"></script>
-
-
+<script src="https://cdn.jsdelivr.net/npm/three@0.141.0/examples/js/geometries/DecalGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.141.0/examples/js/loaders/TextureLoader.js"></script>
     <script>
   const logos = [
     "/images/logos/html.png",
     "/images/logos/css.png",
+    "/images/logos/javascript.png",
     "/images/logos/nodejs.png",
     "/images/logos/php.png",
-    "/images/logos/node.png",
-    "/images/logos/react.png",
+    "/images/logos/python.png",
+    "/images/logos/figma.png",
+    "/images/logos/git.png",
+    "/images/logos/tailwind.png",
     // Add more logos as needed
   ];
 
@@ -269,24 +272,52 @@ I work closely with clients — especially students — to create efficient, sca
 
     // Load texture and create cube
     const loader = new THREE.TextureLoader();
-    loader.load(logo, (texture) => {
-        
-      const material = new THREE.MeshPhongMaterial({ map: texture, color: "#fff8eb", roughness: 0.5, metalness: 0.1, shininess:150, clearcoat: 0.5, clearcoatRoughness: 0.1 });
-      material.side = THREE.DoubleSide; // Ensure the texture is visible from both sides
-      const cube = new THREE.Mesh(
-        new THREE.BoxGeometry(3, 3, 3), // 📦 bigger cube
-        Array(6).fill(material)
-      );
-      scene.add(cube);
+   loader.load(logo, (texture) => {
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(3, 3, 3),
+    new THREE.MeshPhongMaterial({ color: "#023e73", shininess: 50 })
+  );
+  
+  scene.add(cube);
 
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      }
+  const decalMaterial = new THREE.MeshPhongMaterial({
+    map: texture,
+    transparent: true,
+    depthTest: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -4,
+  });
 
-      animate();
-    });
+  const decalSize = new THREE.Vector3(2.4, 2.4, 2.4);
+
+  const decalConfigs = [
+    { pos: new THREE.Vector3(0, 0, 1.51), rot: new THREE.Euler(0, 0, 0) },                     // front
+    { pos: new THREE.Vector3(0, 0, -1.51), rot: new THREE.Euler(0, Math.PI, 0) },              // back
+    { pos: new THREE.Vector3(1.51, 0, 0), rot: new THREE.Euler(0, Math.PI / 2, 0) },           // right
+    { pos: new THREE.Vector3(-1.51, 0, 0), rot: new THREE.Euler(0, -Math.PI / 2, 0) },         // left
+    { pos: new THREE.Vector3(0, 1.51, 0), rot: new THREE.Euler(-Math.PI / 2, 0, 0) },          // top
+    { pos: new THREE.Vector3(0, -1.51, 0), rot: new THREE.Euler(Math.PI / 2, 0, 0) },          // bottom
+  ];
+
+  decalConfigs.forEach(({ pos, rot }) => {
+    const decal = new THREE.Mesh(
+      new THREE.DecalGeometry(cube, pos, rot, decalSize),
+      decalMaterial
+    );
+    
+    scene.add(decal);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+
+  animate();
+});
+
   });
 </script>
 
