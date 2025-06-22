@@ -47,7 +47,7 @@ logos.forEach((logo) => {
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
+    controls.dampingFactor = 0.2;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 4;
     controls.update();
